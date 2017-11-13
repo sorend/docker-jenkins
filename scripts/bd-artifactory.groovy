@@ -7,8 +7,8 @@ def jenkins = Jenkins.getInstance()
 
 def desc = jenkins.getDescriptor("org.jfrog.hudson.ArtifactoryBuilder")
 
-def deployerCredentials = new Credentials("admin", "password")
-def resolverCredentials = new Credentials("", "")
+def deployerCredentials = new CredentialsConfig("admin", "password", "")
+def resolverCredentials = new CredentialsConfig("", "", "")
 
 def sinst = [new ArtifactoryServer(
   "artifactory",
@@ -16,7 +16,7 @@ def sinst = [new ArtifactoryServer(
   deployerCredentials,
   resolverCredentials,
   300,
-  false )
+  false, 3)
 ]
 
 desc.setArtifactoryServers(sinst)

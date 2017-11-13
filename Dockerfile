@@ -7,11 +7,14 @@ RUN /usr/local/bin/install-plugins.sh git matrix-auth workflow-aggregator docker
 
 ENV JENKINS_USER admin
 ENV JENKINS_PASS admin
+ENV JENKINS_EXECUTORS 0
 
 # Skip initial setup
 ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
 
-COPY scripts/* /usr/share/jenkins/ref/init.groovy.d/
+COPY scripts/executors.groovy /usr/share/jenkins/ref/init.groovy.d/
+COPY scripts/bd-proxy.groovy /usr/share/jenkins/ref/init.groovy.d/
+COPY scripts/bd-artifactory.groovy /usr/share/jenkins/ref/init.groovy.d/
 
 VOLUME /var/jenkins_home
 
