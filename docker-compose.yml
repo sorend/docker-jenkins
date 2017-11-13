@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  jenkins:
+    image: bdusad/jenkins:latest
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - "jenkins-data:/var/jenkins_home"
+    networks:
+      - frontend-net
+      - slave-net
+
+  slave1:
+    image: bdusad/jenkins-swarm-slave:latest
+    command: -master http://jenkins:8080 -username admin -password admin -executors 2
+    networks:
+      - slave-net
+
+volumes:
+  jenkins-data:
+
+networks:
+  frontend-net:
+  slave-net:
