@@ -4,17 +4,31 @@ services:
   jenkins:
     image: bdusad/jenkins:latest
     ports:
-      - "8080:8080"
       - "50000:50000"
     volumes:
       - "jenkins-data:/var/jenkins_home"
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.port=8080"
+        - "traefik.frontend.rule=Host:jenkins.s.dnam.dk"
+        - "traefik.backend=http"
+        - "traefik.docker.network=proxy-net"
+      resources:
+        limits:
+          memory: 1g
     networks:
-      - frontend-net
-      - slave-net
+      proxy-net:
+      slave-net:
 
-  slave1:
+  slave:
     image: bdusad/jenkins-swarm-slave:latest
     command: -master http://jenkins:8080 -username admin -password admin -executors 2
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          memory: 100m
     networks:
       - slave-net
 
@@ -22,5 +36,7 @@ volumes:
   jenkins-data:
 
 networks:
-  frontend-net:
+  proxy-net:
+    external:
+      name: proxy-net
   slave-net:
