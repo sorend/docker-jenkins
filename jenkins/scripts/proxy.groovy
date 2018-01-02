@@ -11,4 +11,4 @@ final String noProxyHost = ".bdpnet.dk\n.bdbnet.dk\n.bdunet.dk\nlocalhost"
 final def pc = new hudson.ProxyConfiguration(name, port, userName, password, noProxyHost)
 instance.proxy = pc
 instance.save()
-println "Proxy settings updated for ${name}:${port}"
+println "--> Proxy settings updated for ${name}:${port}"

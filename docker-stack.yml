@@ -25,7 +25,7 @@ services:
     image: bdusad/jenkins-swarm-slave:latest
     command: -master http://jenkins:8080 -username admin -password admin -executors 2
     deploy:
-      replicas: 2
+      replicas: 1
       resources:
         limits:
           memory: 100m

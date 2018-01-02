@@ -14,7 +14,6 @@ jenkins.setSecurityRealm(adrealm)
 jenkins.save()
 
 def localrealm = new HudsonPrivateSecurityRealm(false)
-
 localrealm.createAccount("admin", "devopsjava123")  // for support
 localrealm.createAccount("swarm-slave", env.JENKINS_SWARM_PASS) // for swarm clients
 jenkins.setSecurityRealm(localrealm)
