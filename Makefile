@@ -14,7 +14,7 @@ release:
 	docker push registry.s.dnam.dk/$(PREFIX)/jenkins:$(VER)
 
 deploy:
-	docker stack deploy jenkins -c docker-compose.yml
+	docker stack deploy jenkins -c docker-stack.yml
 	docker stack ps jenkins
 
 clean:

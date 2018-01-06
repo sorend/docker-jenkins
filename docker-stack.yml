@@ -1,4 +1,4 @@
-version: "3"
+version: "3.4"
 
 services:
   jenkins:
@@ -12,7 +12,7 @@ services:
         - "traefik.enable=true"
         - "traefik.port=8080"
         - "traefik.frontend.rule=Host:jenkins.s.dnam.dk"
-        - "traefik.backend=http"
+        - "traefik.backend=jenkins-http"
         - "traefik.docker.network=proxy-net"
       resources:
         limits:
@@ -23,14 +23,14 @@ services:
 
   slave:
     image: bdusad/jenkins-swarm-slave:latest
-    command: -master http://jenkins:8080 -username admin -password admin -executors 2
+    command: -master http://jenkins:8080 -username swarm-slave -password devopsjava123 -executors 2
     deploy:
       replicas: 1
       resources:
         limits:
           memory: 100m
     networks:
-      - slave-net
+      slave-net:
 
 volumes:
   jenkins-data:
