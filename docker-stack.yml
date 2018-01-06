@@ -23,12 +23,23 @@ services:
 
   slave:
     image: bdusad/jenkins-swarm-slave:latest
-    command: -master http://jenkins:8080 -username swarm-slave -password devopsjava123 -executors 2
+    command: -master http://jenkins:8080 -username swarm-slave -password devopsjava123 -executors 2 -labels "linux"
     deploy:
       replicas: 1
       resources:
         limits:
           memory: 100m
+    networks:
+      slave-net:
+
+  selenium-slave:
+    image: bdusad/cloudbees-swarm-slave:latest
+    command: -master http://jenkins:8080 -username swarm-slave -password devopsjava123 -executors 1 -labels "selenium linux"
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 1g
     networks:
       slave-net:
 

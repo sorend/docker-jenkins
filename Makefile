@@ -8,6 +8,7 @@ default: build
 build:
 	docker build --rm -t $(PREFIX)/jenkins:$(VER) jenkins/
 	docker build --rm -t $(PREFIX)/jenkins-swarm-slave:$(VER) jenkins-swarm-slave/
+	docker build --rm -t $(PREFIX)/cloudbees-swarm-slave:$(VER) cloudbees-swarm-slave/
 
 release:
 	docker tag $(PREFIX)/jenkins:$(VER) registry.s.dnam.dk/$(PREFIX)/jenkins:$(VER)
