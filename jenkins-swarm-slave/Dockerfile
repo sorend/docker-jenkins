@@ -19,5 +19,7 @@ ONBUILD ADD ./*.sh /docker-entrypoint-init.d/
 
 USER "${JENKINS_USER}"
 
+ENV JAVA_OPTS -Xmx64m
+
 ENTRYPOINT ["/usr/local/bin/jenkins-slave.sh"]
 

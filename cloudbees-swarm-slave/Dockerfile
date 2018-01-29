@@ -19,5 +19,7 @@ RUN chmod a+rwx /home/jenkins
 WORKDIR /home/jenkins
 USER jenkins
 
+ENV JAVA_OPTS -Xmx64m
+
 ENTRYPOINT ["/opt/bin/entry_point.sh", "/usr/local/bin/jenkins-slave.sh"]
 

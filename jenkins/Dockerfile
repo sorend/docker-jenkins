@@ -14,7 +14,7 @@ USER ${user}
 ENV JENKINS_EXECUTORS 0
 
 # Skip initial setup
-ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
+ENV JAVA_OPTS -Xmx512m -Djenkins.install.runSetupWizard=false
 
 COPY scripts/* /usr/share/jenkins/ref/init.groovy.d/
 COPY jenkins-wrapper.sh /usr/local/bin/
