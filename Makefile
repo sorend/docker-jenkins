@@ -1,21 +1,21 @@
 
-PREFIX = bdusad
+PREFIX = registry.s.dnam.dk/bdusad
+JENKINS_VERSION=2.108
 VER = latest
 # $(shell git describe --tags --abbrev=0)
 
 default: build
 
 build:
-	docker build --rm -t $(PREFIX)/jenkins:$(VER) jenkins/
+	docker build --rm --build-arg JENKINS_VERSION=$(JENKINS_VERSION) -t $(PREFIX)/jenkins:$(JENKINS_VERSION) jenkins/
 	docker build --rm -t $(PREFIX)/jenkins-swarm-slave:$(VER) jenkins-swarm-slave/
 	docker build --rm -t $(PREFIX)/cloudbees-swarm-slave:$(VER) cloudbees-swarm-slave/
 
 release:
-	docker tag $(PREFIX)/jenkins:$(VER) registry.s.dnam.dk/$(PREFIX)/jenkins:$(VER)
-	docker push registry.s.dnam.dk/$(PREFIX)/jenkins:$(VER)
+	docker push $(PREFIX)/jenkins:$(JENKINS_VERSION)
 
 deploy:
-	docker stack deploy jenkins -c docker-stack.yml
+	JENKINS_VERSION=$(JENKINS_VERSION) docker stack deploy jenkins -c docker-stack-docker.yml
 	docker stack ps jenkins
 
 clean:

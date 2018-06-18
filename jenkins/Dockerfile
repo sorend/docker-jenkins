@@ -1,15 +1,24 @@
+ARG JENKINS_VERSION=2.108
 
-FROM jenkins/jenkins:2.89.2-alpine
+FROM jenkins/jenkins:${JENKINS_VERSION}-alpine
 
 ARG user=jenkins
+ARG docker_gid=999
 
 RUN /usr/local/bin/install-plugins.sh git matrix-auth workflow-aggregator docker-workflow blueocean credentials-binding \
 	swarm active-directory \
-	monitoring
+	monitoring \
+	pipeline-aggregator-view \
+	docker
 
 USER root
-RUN mkdir /var/backing && chown -R ${user} /var/backing
+RUN set -x && \
+	mkdir /var/backing && chown -R ${user} /var/backing && \
+	( getent group ${docker_gid} || addgroup -S -G ${docker_gid} jdocker ) && \
+	addgroup ${user} $(getent group ${docker_gid} | cut -f 1 -d ":")
 USER ${user}
+
+RUN id
 
 ENV JENKINS_EXECUTORS 0
 
@@ -21,4 +30,4 @@ COPY jenkins-wrapper.sh /usr/local/bin/
 
 VOLUME /var/jenkins_home
 
-ENTRYPOINT ["/bin/tini", "--", "/usr/local/bin/jenkins-wrapper.sh"]
+ENTRYPOINT ["/sbin/tini", "--", "/usr/local/bin/jenkins-wrapper.sh"]

@@ -1,0 +1,33 @@
+version: "3.4"
+
+services:
+  jenkins:
+    image: registry.s.dnam.dk/bdusad/jenkins:${JENKINS_VERSION}
+    ports:
+      - "50000:50000"
+    volumes:
+      - "jenkins-data:/var/jenkins_home"
+      - "/usr/bin/docker:/usr/bin/docker:ro"
+      - "/var/run/docker.sock:/var/run/docker.sock:rw"
+    environment:
+      - "JENKINS_EXECUTORS=0"
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.port=8080"
+        - "traefik.frontend.rule=Host:jenkins.s.dnam.dk"
+        - "traefik.backend=jenkins-http"
+        - "traefik.docker.network=proxy-net"
+      resources:
+        limits:
+          memory: 1g
+    networks:
+      proxy-net:
+
+volumes:
+  jenkins-data:
+
+networks:
+  proxy-net:
+    external:
+      name: proxy-net
